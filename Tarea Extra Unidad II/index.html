@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivina si es Mayor o Menor</title>
+</head>
+<body>
+    <h1>Juego: Adivina si es Mayor o Menor</h1>
+    <p>La computadora ha generado un número entre 1 y 9. ¡Adivina si tu número es mayor, menor o igual!</p>
+
+    <form id="gameForm">
+        <label for="userNumber">Ingresa un número entre 3 y 6:</label>
+        <input type="number" id="userNumber" name="userNumber" min="3" max="6" required>
+        <br><br>
+        <label for="userGuess">¿Tu número es mayor, menor o igual al de la computadora?</label>
+        <select id="userGuess" name="userGuess" required>
+            <option value="mayor">Mayor</option>
+            <option value="menor">Menor</option>
+            <option value="igual">Igual</option>
+        </select>
+        <br><br>
+        <button type="submit">Adivinar</button>
+    </form>
+
+    <h2 id="result"></h2>
+    <button id="playAgain" style="display:none;">Jugar de nuevo</button>
+
+    <script>
+        let computerNumber;
+
+        function startGame() {
+            // Generar un número al azar entre 1 y 9
+            computerNumber = Math.floor(Math.random() * 9) + 1;
+            console.log("Número de la computadora:", computerNumber); // Para depuración o regristro
+            document.getElementById('result').textContent = '';
+            document.getElementById('playAgain').style.display = 'none';
+        }
+
+        document.getElementById('gameForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar que el formulario se envíe
+
+            // Obtener el número y la adivinanza del usuario
+            const userNumber = parseInt(document.getElementById('userNumber').value);
+            const userGuess = document.getElementById('userGuess').value;
+
+            // Validar que el número esté en el rango correcto
+            if (userNumber < 3 || userNumber > 6) {
+                alert("Por favor, ingresa un número entre 3 y 6.");
+                return;
+            }
+
+            // Determinar si la adivinanza es correcta
+            let resultMessage;
+            if (
+                (userGuess === "mayor" && userNumber > computerNumber) ||
+                (userGuess === "menor" && userNumber < computerNumber) ||
+                (userGuess === "igual" && userNumber === computerNumber)
+            ) {
+                resultMessage = `La computadora eligió ${computerNumber}, usted eligió ${userNumber}. Su elección es ${userGuess}. ¡Ha adivinado!`;
+            } else {
+                resultMessage = `La computadora eligió ${computerNumber}, usted eligió ${userNumber}. Su elección es incorrecta. ¡Inténtelo de nuevo!`;
+            }
+
+            // Mostrar el resultado
+            document.getElementById('result').textContent = resultMessage;
+            document.getElementById('playAgain').style.display = 'block';
+        });
+
+        document.getElementById('playAgain').addEventListener('click', function() {
+            const userNumber = parseInt(document.getElementById('userNumber').value = "");
+            startGame(); // Reiniciar el juego
+        });
+
+        // Iniciar el juego al cargar la página
+        startGame();
+    </script>
+</body>
+</html>
